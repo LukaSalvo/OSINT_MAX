@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT MAX</title>
+    <meta name="description" content="Outil OSINT : Sherlock, Holehe, Whois, IP Lookup.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <span class="logo-text">OSINT <span class="logo-accent">MAX</span></span>
+            <span class="logo-sub">Intelligence OSINT</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-tool="sherlock" onclick="switchTool('sherlock')">
+                <span class="nav-item-icon">👤</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">Sherlock</span>
+                    <span class="nav-item-desc">Pseudo → Profils</span>
+                </div>
+            </button>
+            <button class="nav-item" data-tool="holehe" onclick="switchTool('holehe')">
+                <span class="nav-item-icon">📧</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">Holehe</span>
+                    <span class="nav-item-desc">Email → Comptes</span>
+                </div>
+            </button>
+            <button class="nav-item" data-tool="whois" onclick="switchTool('whois')">
+                <span class="nav-item-icon">🌐</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">Whois</span>
+                    <span class="nav-item-desc">Domaine → Registrar</span>
+                </div>
+            </button>
+            <button class="nav-item" data-tool="iplookup" onclick="switchTool('iplookup')">
+                <span class="nav-item-icon">🔍</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">IP Lookup</span>
+                    <span class="nav-item-desc">IP → Géolocalisation</span>
+                </div>
+            </button>
+            <button class="nav-item" data-tool="exiftool" onclick="switchTool('exiftool')">
+                <span class="nav-item-icon">📷</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">ExifTool</span>
+                    <span class="nav-item-desc">Image → Métadonnées</span>
+                </div>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span>v2.0</span>
+        </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main">
+
+        <!-- SHERLOCK -->
+        <section class="tool-section active" id="section-sherlock">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge green">👤 Sherlock</span>
+                    <p class="tool-desc">Trouve les profils d'un pseudonyme sur des centaines de plateformes.</p>
+                </div>
+                <div class="search-row">
+                    <input type="text" id="input-sherlock" placeholder="Ex: johndoe" autocomplete="off"
+                        spellcheck="false">
+                    <button class="btn-green" onclick="runSherlock()">Rechercher</button>
+                </div>
+                <details class="params-block">
+                    <summary>⚙️ Paramètres</summary>
+                    <div class="params-grid">
+                        <label class="param-label">
+                            Timeout
+                            <span class="param-value" id="sherlock-timeout-val">5s</span>
+                        </label>
+                        <input type="range" id="sherlock-timeout" min="1" max="30" value="5"
+                            oninput="document.getElementById('sherlock-timeout-val').textContent = this.value + 's'">
+
+                        <label class="param-label">Filtre de site</label>
+                        <input type="text" class="param-input" id="sherlock-site" placeholder="Ex: twitter (optionnel)">
+                    </div>
+                </details>
+            </div>
+            <div class="result-area" id="results-sherlock">
+                <div class="result-placeholder">🔎 Entrez un pseudonyme et lancez la recherche</div>
+            </div>
+        </section>
+
+        <!-- HOLEHE -->
+        <section class="tool-section" id="section-holehe">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge blue">📧 Holehe</span>
+                    <p class="tool-desc">Vérifie si un email est enregistré sur différentes plateformes.</p>
+                </div>
+                <div class="search-row">
+                    <input type="email" id="input-holehe" placeholder="Ex: jean@exemple.com" autocomplete="off"
+                        spellcheck="false">
+                    <button class="btn-blue" onclick="runHolehe()">Rechercher</button>
+                </div>
+                <details class="params-block">
+                    <summary>⚙️ Paramètres</summary>
+                    <div class="params-grid">
+                        <label class="param-label">
+                            Timeout
+                            <span class="param-value" id="holehe-timeout-val">10s</span>
+                        </label>
+                        <input type="range" id="holehe-timeout" min="1" max="60" value="10"
+                            oninput="document.getElementById('holehe-timeout-val').textContent = this.value + 's'">
+
+                        <label class="param-label toggle-label">
+                            <span>No password recovery</span>
+                            <span class="param-hint">(plus rapide)</span>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="holehe-nopwd">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </details>
+            </div>
+            <div class="result-area" id="results-holehe">
+                <div class="result-placeholder">📧 Entrez un email et lancez la recherche</div>
+            </div>
+        </section>
+
+        <!-- WHOIS -->
+        <section class="tool-section" id="section-whois">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge purple">🌐 Whois</span>
+                    <p class="tool-desc">Informations sur un nom de domaine : registrar, dates, serveurs DNS.</p>
+                </div>
+                <div class="search-row">
+                    <input type="text" id="input-whois" placeholder="Ex: google.com" autocomplete="off"
+                        spellcheck="false">
+                    <button class="btn-purple" onclick="runWhois()">Rechercher</button>
+                </div>
+            </div>
+            <div class="result-area" id="results-whois">
+                <div class="result-placeholder">🌐 Entrez un domaine et lancez la recherche</div>
+            </div>
+        </section>
+
+        <!-- IP LOOKUP -->
+        <section class="tool-section" id="section-iplookup">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge orange">🔍 IP Lookup</span>
+                    <p class="tool-desc">Géolocalisation et infos réseau d'une adresse IP ou d'un hostname.</p>
+                </div>
+                <div class="search-row">
+                    <input type="text" id="input-iplookup" placeholder="Ex: 8.8.8.8 ou google.com" autocomplete="off"
+                        spellcheck="false">
+                    <button class="btn-orange" onclick="runIpLookup()">Rechercher</button>
+                </div>
+            </div>
+            <div class="result-area" id="results-iplookup">
+                <div class="result-placeholder">🔍 Entrez une IP ou un hostname et lancez la recherche</div>
+            </div>
+        </section>
+
+        <!-- EXIF TOOL -->
+        <section class="tool-section" id="section-exiftool">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge teal">📷 ExifTool</span>
+                    <p class="tool-desc">Extrait les métadonnées d'une image (GPS, appareil, date, logiciel…).</p>
+                </div>
+                <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
+                    ondragover="event.preventDefault(); this.classList.add('drag-over')"
+                    ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+                    <span class="drop-icon">📁</span>
+                    <span class="drop-label" id="drop-label">Glissez une image ici ou cliquez pour choisir</span>
+                    <span class="drop-hint">JPG, PNG, TIFF, WEBP, HEIC</span>
+                </div>
+                <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.tiff,.tif,.webp,.heic,.gif"
+                    style="display:none" onchange="handleFileSelect(this.files[0])">
+                <div class="exif-actions hidden" id="exif-actions">
+                    <button class="btn-teal" onclick="runExiftool()">🔬 Analyser</button>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" id="btn-view-pretty" onclick="switchView('pretty')">Vue
+                            lisible</button>
+                        <button class="toggle-btn" id="btn-view-raw" onclick="switchView('raw')">Vue brute</button>
+                    </div>
+                </div>
+            </div>
+            <div class="result-area" id="results-exiftool">
+                <div class="result-placeholder">📷 Déposez une image pour extraire ses métadonnées</div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
