@@ -1,0 +1,8 @@
+services:
+  osint_max:
+    build: .
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./reports:/app/reports
+    restart: unless-stopped

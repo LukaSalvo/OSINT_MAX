@@ -1,3 +1,13 @@
+// ── Dossiers State ────────────────────────────────────────────────────────────
+let currentDossierId = null;
+let lastResults = {
+    sherlock: null,
+    holehe: null,
+    whois: null,
+    iplookup: null,
+    exiftool: null
+};
+
 // ── Navigation ────────────────────────────────────────────────────────────────
 function switchTool(tool) {
     // Sidebar items
@@ -7,6 +17,10 @@ function switchTool(tool) {
     // Sections
     document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
     document.getElementById(`section-${tool}`).classList.add('active');
+
+    if (tool === 'dossiers') {
+        loadDossiers();
+    }
 }
 
 // ── Utilitaires ───────────────────────────────────────────────────────────────
@@ -30,9 +44,13 @@ async function runSherlock() {
     const timeout = document.getElementById('sherlock-timeout').value;
     const site = document.getElementById('sherlock-site').value.trim();
     const area = document.getElementById('results-sherlock');
+    const saveBtn = document.getElementById('save-sherlock');
+    const select = document.getElementById('select-sherlock');
 
     if (!username) return alert('Veuillez entrer un pseudonyme !');
     showLoader(area);
+    saveBtn.classList.add('hidden');
+    select.classList.add('hidden');
 
     try {
         const res = await fetch('/search/sherlock', {
@@ -43,6 +61,12 @@ async function runSherlock() {
         const data = await res.json();
 
         if (data.status === 'error') { showError(area, data.message); return; }
+
+        lastResults.sherlock = { query: data.query, data: data };
+        if (select.options.length > 0) {
+            saveBtn.classList.remove('hidden');
+            select.classList.remove('hidden');
+        }
 
         if (data.links.length === 0) {
             area.innerHTML = `<div class="msg-no-results">🔍 Aucun profil trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
@@ -69,9 +93,13 @@ async function runHolehe() {
     const timeout = document.getElementById('holehe-timeout').value;
     const noPwd = document.getElementById('holehe-nopwd').checked;
     const area = document.getElementById('results-holehe');
+    const saveBtn = document.getElementById('save-holehe');
+    const select = document.getElementById('select-holehe');
 
     if (!email) return alert('Veuillez entrer une adresse e-mail !');
     showLoader(area);
+    saveBtn.classList.add('hidden');
+    select.classList.add('hidden');
 
     try {
         const res = await fetch('/search/holehe', {
@@ -83,8 +111,14 @@ async function runHolehe() {
 
         if (data.status === 'error') { showError(area, data.message); return; }
 
+        lastResults.holehe = { query: data.query, data: data };
+        if (select.options.length > 0) {
+            saveBtn.classList.remove('hidden');
+            select.classList.remove('hidden');
+        }
+
         if (data.links.length === 0) {
-            area.innerHTML = `<div class="msg-no-results">� Aucun compte trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
+            area.innerHTML = `<div class="msg-no-results"> Aucun compte trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
             return;
         }
 
@@ -106,9 +140,13 @@ async function runHolehe() {
 async function runWhois() {
     const domain = document.getElementById('input-whois').value.trim();
     const area = document.getElementById('results-whois');
+    const saveBtn = document.getElementById('save-whois');
+    const select = document.getElementById('select-whois');
 
     if (!domain) return alert('Veuillez entrer un nom de domaine !');
     showLoader(area);
+    saveBtn.classList.add('hidden');
+    select.classList.add('hidden');
 
     try {
         const res = await fetch('/search/whois', {
@@ -119,6 +157,12 @@ async function runWhois() {
         const data = await res.json();
 
         if (data.status === 'error') { showError(area, data.message); return; }
+
+        lastResults.whois = { query: data.query, data: data };
+        if (select.options.length > 0) {
+            saveBtn.classList.remove('hidden');
+            select.classList.remove('hidden');
+        }
 
         const fields = data.fields;
         if (!fields || Object.keys(fields).length === 0) {
@@ -144,9 +188,13 @@ async function runWhois() {
 async function runIpLookup() {
     const ip = document.getElementById('input-iplookup').value.trim();
     const area = document.getElementById('results-iplookup');
+    const saveBtn = document.getElementById('save-iplookup');
+    const select = document.getElementById('select-iplookup');
 
     if (!ip) return alert('Veuillez entrer une IP ou un hostname !');
     showLoader(area);
+    saveBtn.classList.add('hidden');
+    select.classList.add('hidden');
 
     try {
         const res = await fetch('/search/iplookup', {
@@ -157,6 +205,12 @@ async function runIpLookup() {
         const data = await res.json();
 
         if (data.status === 'error') { showError(area, data.message); return; }
+
+        lastResults.iplookup = { query: data.query, data: data };
+        if (select.options.length > 0) {
+            saveBtn.classList.remove('hidden');
+            select.classList.remove('hidden');
+        }
 
         const fields = data.fields;
         area.innerHTML = `<div class="result-status orange">✅ Résultats pour « ${esc(data.query)} »</div>`
@@ -197,12 +251,18 @@ function handleFileSelect(file) {
     document.getElementById('results-exiftool').innerHTML =
         `<div class="result-placeholder">Cliquez sur "Analyser" pour extraire les métadonnées.</div>`;
     lastExifData = null;
+    document.getElementById('save-exiftool').classList.add('hidden');
+    document.getElementById('select-exiftool').classList.add('hidden');
 }
 
 async function runExiftool() {
     if (!selectedFile) return alert('Veuillez sélectionner une image !');
     const area = document.getElementById('results-exiftool');
+    const saveBtn = document.getElementById('save-exiftool');
+    const select = document.getElementById('select-exiftool');
     showLoader(area);
+    saveBtn.classList.add('hidden');
+    select.classList.add('hidden');
 
     const formData = new FormData();
     formData.append('file', selectedFile, selectedFile.name);
@@ -214,6 +274,11 @@ async function runExiftool() {
         if (data.status === 'error') { showError(area, data.message); return; }
 
         lastExifData = data;
+        lastResults.exiftool = { query: data.filename, data: data };
+        if (select.options.length > 0) {
+            saveBtn.classList.remove('hidden');
+            select.classList.remove('hidden');
+        }
         renderExif(area, data, currentView);
 
     } catch {
@@ -295,6 +360,256 @@ function formatExifVal(key, val) {
     return esc(String(val));
 }
 
+// ── Gestion des Dossiers ──────────────────────────────────────────────────────
+async function createNewDossier() {
+    const input = document.getElementById('input-dossier-name');
+    const name = input.value.trim();
+    if (!name) return alert('Veuillez entrer un nom pour le dossier !');
+
+    try {
+        const res = await fetch('/dossiers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        const data = await res.json();
+        currentDossierId = data.id;
+        input.value = '';
+        loadDossiers();
+        alert(`Dossier "${data.name}" créé avec succès !`);
+    } catch (e) {
+        alert('Erreur lors de la création du dossier.');
+    }
+}
+
+async function loadDossiers() {
+    const list = document.getElementById('dossier-list');
+    list.innerHTML = `<div class="loader">Chargement des dossiers…</div>`;
+
+    try {
+        const res = await fetch('/dossiers');
+        const data = await res.json();
+        updateDossierSelects(data);
+
+        if (data.length === 0) {
+            list.innerHTML = `<div class="msg-no-results">Aucun dossier trouvé.</div>`;
+            return;
+        }
+
+        list.innerHTML = data.map(d => `
+            <div class="dossier-card" onclick="openDossier('${esc(d.id)}')">
+                <span class="dossier-name">${esc(d.name)}</span>
+                <span class="dossier-date">Crée le : ${new Date(d.created_at).toLocaleString()}</span>
+                <span class="dossier-stats">📊 ${d.result_count} résultat${d.result_count > 1 ? 's' : ''}</span>
+                <div class="dossier-card-actions">
+                    <button class="btn-card-action" onclick="renameDossier('${esc(d.id)}', event)">✏️ Renommer</button>
+                    <button class="btn-card-action btn-danger" onclick="deleteDossier('${esc(d.id)}', event)">🗑️ Supprimer</button>
+                </div>
+            </div>
+        `).join('');
+    } catch {
+        list.innerHTML = `<div class="msg-error">Erreur lors du chargement des dossiers.</div>`;
+    }
+}
+
+function updateDossierSelects(dossiers) {
+    const selects = document.querySelectorAll('.dossier-select');
+    // None option
+    const noneOpt = '<option value="">-- Ne pas enregistrer --</option>';
+    const options = dossiers.map(d => `<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');
+
+    selects.forEach(s => {
+        s.innerHTML = noneOpt + options;
+        if (currentDossierId && dossiers.some(d => d.id === currentDossierId)) {
+            s.value = currentDossierId;
+        } else {
+            s.value = "";
+        }
+
+        // Add listener to change button appearance
+        s.onchange = () => {
+            const tool = s.id.replace('select-', '');
+            const btn = document.getElementById(`save-${tool}`);
+            if (s.value === "") {
+                btn.style.opacity = "0.5";
+                btn.style.pointerEvents = "none";
+            } else {
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        };
+    });
+
+    // Show/hide based on result presence
+    const tools = ['sherlock', 'holehe', 'whois', 'iplookup', 'exiftool'];
+    tools.forEach(tool => {
+        const btn = document.getElementById(`save-${tool}`);
+        const sel = document.getElementById(`select-${tool}`);
+        if (lastResults[tool]) {
+            btn.classList.remove('hidden');
+            sel.classList.remove('hidden');
+            // Trigger initial state
+            sel.onchange();
+        } else {
+            btn.classList.add('hidden');
+            sel.classList.add('hidden');
+        }
+    });
+}
+
+async function deleteDossier(id, event) {
+    event.stopPropagation();
+    if (!confirm('Voulez-vous vraiment supprimer ce dossier ?')) return;
+
+    try {
+        const res = await fetch(`/dossiers/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.status === 'success') {
+            if (currentDossierId === id) currentDossierId = null;
+            loadDossiers();
+        } else {
+            alert(data.message);
+        }
+    } catch {
+        alert('Erreur lors de la suppression.');
+    }
+}
+
+async function renameDossier(id, event) {
+    event.stopPropagation();
+    const newName = prompt('Entrez le nouveau nom du dossier :');
+    if (!newName) return;
+
+    try {
+        const res = await fetch(`/dossiers/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newName })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            loadDossiers();
+        } else {
+            alert(data.message);
+        }
+    } catch {
+        alert('Erreur lors du renommage.');
+    }
+}
+
+function exportDossier() {
+    if (!currentDossierId) return alert('Aucun dossier ouvert !');
+    window.location.href = `/dossiers/${currentDossierId}/export`;
+}
+
+async function openDossier(id) {
+    try {
+        const res = await fetch(`/dossiers/${id}`);
+        const dossier = await res.json();
+        if (dossier.status === 'error') return alert(dossier.message);
+
+        currentDossierId = id;
+        renderReport(dossier);
+        switchTool('report-view');
+        // Synchronize selects
+        document.querySelectorAll('.dossier-select').forEach(s => {
+            if ([...s.options].some(o => o.value === id)) s.value = id;
+        });
+    } catch {
+        alert('Erreur lors de l\'ouverture du dossier.');
+    }
+}
+
+async function addToReport(tool) {
+    const select = document.getElementById(`select-${tool}`);
+    const dossierId = select.value;
+    if (!dossierId) return alert('Veuillez sélectionner un dossier !');
+
+    const result = lastResults[tool];
+    if (!result) return alert('Aucun résultat à ajouter.');
+
+    try {
+        const res = await fetch(`/dossiers/${dossierId}/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tool: tool,
+                query: result.query,
+                data: result.data
+            })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            const btn = document.getElementById(`save-${tool}`);
+            btn.textContent = '✅ Ajouté';
+            btn.classList.add('active');
+            setTimeout(() => {
+                btn.textContent = '➕ Rapport';
+                btn.classList.remove('active');
+            }, 2000);
+            currentDossierId = dossierId; // Remember last used dossier
+        } else {
+            alert(data.message);
+        }
+    } catch {
+        alert('Erreur lors de l\'ajout au rapport.');
+    }
+}
+
+function renderReport(dossier) {
+    const title = document.getElementById('report-title');
+    const date = document.getElementById('report-date');
+    const content = document.getElementById('report-content');
+
+    title.textContent = dossier.name;
+    date.textContent = `Crée le : ${new Date(dossier.created_at).toLocaleString()}`;
+
+    if (dossier.results.length === 0) {
+        content.innerHTML = `<div class="msg-no-results">Ce dossier est vide.</div>`;
+        return;
+    }
+
+    content.innerHTML = dossier.results.map(res => `
+        <div class="report-item">
+            <div class="report-item-header">
+                <span class="report-item-tool">${esc(res.tool)}</span>
+                <span class="report-item-query">${esc(res.query)}</span>
+                <span class="report-item-time">${new Date(res.timestamp).toLocaleTimeString()}</span>
+            </div>
+            <div class="report-item-data">
+                ${renderToolData(res.tool, res.data)}
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderToolData(tool, data) {
+    const tempDiv = document.createElement('div');
+    if (tool === 'sherlock' || tool === 'holehe') {
+        const cls = tool === 'sherlock' ? 'green' : 'blue';
+        const links = data.links.map(l => `
+            <div class="result-link ${cls}-link">
+                <span class="link-name">${esc(l.platform)}</span>
+                <span class="link-url ${cls}">${esc(l.url)}</span>
+            </div>
+        `).join('');
+        return `<div class="result-status ${cls}">✅ ${data.count} résultats</div>` + links;
+    } else if (tool === 'whois' || tool === 'iplookup') {
+        const cls = tool === 'whois' ? 'purple' : 'orange';
+        const fields = Object.entries(data.fields).map(([k, v]) => `
+            <div class="field-card">
+                <span class="field-key">${esc(k)}</span>
+                <span class="field-val ${cls}">${esc(v)}</span>
+            </div>
+        `).join('');
+        return `<div class="fields-grid">${fields}</div>`;
+    } else if (tool === 'exiftool') {
+        renderExif(tempDiv, data, 'pretty');
+        return tempDiv.innerHTML;
+    }
+    return '';
+}
+
 // ── Touche Entrée sur tous les inputs ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const bindings = [
@@ -302,10 +617,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ['input-holehe', runHolehe],
         ['input-whois', runWhois],
         ['input-iplookup', runIpLookup],
+        ['input-dossier-name', createNewDossier],
     ];
     bindings.forEach(([id, fn]) => {
-        document.getElementById(id).addEventListener('keydown', e => {
-            if (e.key === 'Enter') fn();
-        });
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('keydown', e => {
+                if (e.key === 'Enter') fn();
+            });
+        }
     });
+
+    // Auto-load dossiers
+    loadDossiers();
 });

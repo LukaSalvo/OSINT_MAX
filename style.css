@@ -10,19 +10,18 @@
 
 /* ── Root ───────────────────────────────────────────────────────────────────── */
 :root {
-    --bg: #0d1117;
-    --bg2: #161b22;
-    --bg3: #21262d;
-    --border: #30363d;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --green: #2ea043;
-    --green-hi: #3fb950;
-    --blue: #1f6feb;
-    --blue-hi: #58a6ff;
-    --purple: #8957e5;
+    --green: #2ecc71;
+    --blue: #3498db;
+    --purple: #9b59b6;
+    --orange: #e67e22;
+    --teal: #1abc9c;
+    --info: #34495e;
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --border: #334155;
+    --text: #f8fafc;
+    --muted: #94a3b8;
     --purple-hi: #a371f7;
-    --orange: #d29922;
     --orange-hi: #e3b341;
     --sidebar-w: 230px;
 }
@@ -904,4 +903,236 @@ input[type="range"] {
 
 .gps-map-link:hover {
     background: rgba(13, 148, 136, 0.22);
+}
+
+.btn-info {
+    background: var(--info);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.btn-info:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.btn-add-report {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-left: 8px;
+}
+
+.btn-add-report:hover {
+    background: var(--card-bg);
+    color: var(--text);
+    border-color: var(--text);
+}
+
+.btn-add-report.active {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+}
+
+.dossier-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 20px;
+}
+
+.dossier-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dossier-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.dossier-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.dossier-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    padding: 28px;
+}
+
+.report-title-block h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.report-date {
+    color: var(--muted);
+}
+
+.btn-back,
+.btn-print {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-back {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-print {
+    background: var(--blue);
+    border: none;
+    color: white;
+}
+
+.report-content {
+    padding: 0 28px 40px;
+}
+
+.report-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.report-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.report-item-tool {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--blue);
+}
+
+.report-item-query {
+    font-family: monospace;
+    color: var(--muted);
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+    }
+
+    .sidebar,
+    .nav-item,
+    .btn-back,
+    .btn-print,
+    .tool-top,
+    .sidebar-nav,
+    .params-block,
+    .result-placeholder {
+        display: none !important;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    .report-item {
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        background: white;
+        color: black;
+        box-shadow: none;
+        margin-bottom: 20px;
+    }
+
+    .report-title-block h1 {
+        color: black;
+    }
+
+    .result-link,
+    .field-card,
+    .exif-card {
+        border: 1px solid #eee;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .field-key,
+    .exif-key {
+        color: #666 !important;
+    }
+
+    .field-val,
+    .exif-val {
+        color: black !important;
+    }
+
+    .green-link,
+    .blue-link,
+    .purple-link,
+    .orange-link {
+        background: white !important;
+        color: black !important;
+    }
+
+    .green,
+    .blue,
+    .purple,
+    .orange,
+    .teal {
+        color: black !important;
+        border-color: #ddd !important;
+        background: white !important;
+    }
+
+    .report-header {
+        border-bottom: 2px solid black;
+    }
+
+    .result-status {
+        color: black !important;
+    }
 }

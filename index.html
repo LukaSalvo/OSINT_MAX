@@ -54,6 +54,13 @@
                     <span class="nav-item-desc">Image → Métadonnées</span>
                 </div>
             </button>
+            <button class="nav-item" data-tool="dossiers" onclick="switchTool('dossiers')">
+                <span class="nav-item-icon">📂</span>
+                <div class="nav-item-text">
+                    <span class="nav-item-name">Dossiers</span>
+                    <span class="nav-item-desc">Rapports & Archives</span>
+                </div>
+            </button>
         </nav>
 
         <div class="sidebar-footer">
@@ -75,6 +82,9 @@
                     <input type="text" id="input-sherlock" placeholder="Ex: johndoe" autocomplete="off"
                         spellcheck="false">
                     <button class="btn-green" onclick="runSherlock()">Rechercher</button>
+                    <select class="dossier-select hidden" id="select-sherlock"></select>
+                    <button class="btn-add-report hidden" id="save-sherlock" onclick="addToReport('sherlock')">➕
+                        Rapport</button>
                 </div>
                 <details class="params-block">
                     <summary>⚙️ Paramètres</summary>
@@ -107,6 +117,9 @@
                     <input type="email" id="input-holehe" placeholder="Ex: jean@exemple.com" autocomplete="off"
                         spellcheck="false">
                     <button class="btn-blue" onclick="runHolehe()">Rechercher</button>
+                    <select class="dossier-select hidden" id="select-holehe"></select>
+                    <button class="btn-add-report hidden" id="save-holehe" onclick="addToReport('holehe')">➕
+                        Rapport</button>
                 </div>
                 <details class="params-block">
                     <summary>⚙️ Paramètres</summary>
@@ -145,6 +158,9 @@
                     <input type="text" id="input-whois" placeholder="Ex: google.com" autocomplete="off"
                         spellcheck="false">
                     <button class="btn-purple" onclick="runWhois()">Rechercher</button>
+                    <select class="dossier-select hidden" id="select-whois"></select>
+                    <button class="btn-add-report hidden" id="save-whois" onclick="addToReport('whois')">➕
+                        Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-whois">
@@ -163,6 +179,9 @@
                     <input type="text" id="input-iplookup" placeholder="Ex: 8.8.8.8 ou google.com" autocomplete="off"
                         spellcheck="false">
                     <button class="btn-orange" onclick="runIpLookup()">Rechercher</button>
+                    <select class="dossier-select hidden" id="select-iplookup"></select>
+                    <button class="btn-add-report hidden" id="save-iplookup" onclick="addToReport('iplookup')">➕
+                        Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-iplookup">
@@ -188,6 +207,9 @@
                     style="display:none" onchange="handleFileSelect(this.files[0])">
                 <div class="exif-actions hidden" id="exif-actions">
                     <button class="btn-teal" onclick="runExiftool()">🔬 Analyser</button>
+                    <select class="dossier-select hidden" id="select-exiftool"></select>
+                    <button class="btn-add-report hidden" id="save-exiftool" onclick="addToReport('exiftool')">➕
+                        Rapport</button>
                     <div class="view-toggle">
                         <button class="toggle-btn active" id="btn-view-pretty" onclick="switchView('pretty')">Vue
                             lisible</button>
@@ -197,6 +219,43 @@
             </div>
             <div class="result-area" id="results-exiftool">
                 <div class="result-placeholder">📷 Déposez une image pour extraire ses métadonnées</div>
+            </div>
+        </section>
+
+        <!-- DOSSIERS -->
+        <section class="tool-section" id="section-dossiers">
+            <div class="tool-top">
+                <div class="tool-title-row">
+                    <span class="tool-badge info">📂 Dossiers</span>
+                    <p class="tool-desc">Consultez vos rapports OSINT sauvegardés et gérez vos dossiers.</p>
+                </div>
+                <div class="search-row">
+                    <input type="text" id="input-dossier-name" placeholder="Nom du nouveau dossier..."
+                        autocomplete="off">
+                    <button class="btn-info" onclick="createNewDossier()">Nouveau Dossier</button>
+                </div>
+            </div>
+            <div class="dossier-list" id="dossier-list">
+                <!-- Chargé dynamiquement -->
+            </div>
+        </section>
+
+        <!-- REPORT VIEW -->
+        <section class="tool-section" id="section-report-view">
+            <div class="report-header">
+                <div class="report-actions">
+                    <button class="btn-back" onclick="switchTool('dossiers')">← Retour</button>
+                    <button class="btn-info btn-print" onclick="window.print()">🖨️ Imprimer</button>
+                    <button class="btn-purple btn-export" id="btn-export-txt" onclick="exportDossier()">📄 Exporter
+                        TXT</button>
+                </div>
+                <div class="report-title-block">
+                    <h1 id="report-title">Titre du Rapport</h1>
+                    <span id="report-date">Date</span>
+                </div>
+            </div>
+            <div id="report-content" class="report-content">
+                <!-- Contenu du rapport -->
             </div>
         </section>
 

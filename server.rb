@@ -3,17 +3,162 @@ require 'json'
 require 'net/http'
 require 'uri'
 require 'tempfile'
+require 'fileutils'
 
 set :port, 4567
 set :public_folder, '.'
+set :server, 'webrick'
 set :bind, '0.0.0.0'
 
 SHERLOCK_BIN = `which sherlock`.strip
 HOLEHE_BIN   = `which holehe`.strip
 WHOIS_BIN    = '/usr/bin/whois'
+REPORTS_DIR  = File.join(File.dirname(__FILE__), 'reports')
+
+FileUtils.mkdir_p(REPORTS_DIR) unless Dir.exist?(REPORTS_DIR)
 
 get '/' do
   send_file 'index.html'
+end
+
+# ── Dossiers : gestion des rapports ───────────────────────────────────────────
+get '/dossiers' do
+  content_type :json
+  files = Dir.glob(File.join(REPORTS_DIR, '*.json')).sort_by { |f| File.mtime(f) }.reverse
+  dossiers = files.map do |f|
+    begin
+      data = JSON.parse(File.read(f))
+      { 
+        id: File.basename(f, '.json'), 
+        name: data['name'], 
+        created_at: File.mtime(f),
+        result_count: data['results'] ? data['results'].length : 0
+      }
+    rescue
+      nil
+    end
+  end.compact
+  dossiers.to_json
+end
+
+delete '/dossiers/:id' do
+  content_type :json
+  file_path = File.join(REPORTS_DIR, "#{params[:id]}.json")
+  if File.exist?(file_path)
+    File.delete(file_path)
+    { status: 'success' }.to_json
+  else
+    status 404
+    { status: 'error', message: 'Dossier introuvable.' }.to_json
+  end
+end
+
+patch '/dossiers/:id' do
+  content_type :json
+  file_path = File.join(REPORTS_DIR, "#{params[:id]}.json")
+  if File.exist?(file_path)
+    data = JSON.parse(request.body.read)
+    new_name = data['name'].to_s.strip
+    if new_name.empty?
+      status 400
+      return { status: 'error', message: 'Le nom ne peut pas être vide.' }.to_json
+    end
+    
+    dossier = JSON.parse(File.read(file_path))
+    dossier['name'] = new_name
+    File.write(file_path, dossier.to_json)
+    { status: 'success', name: new_name }.to_json
+  else
+    status 404
+    { status: 'error', message: 'Dossier introuvable.' }.to_json
+  end
+end
+
+get '/dossiers/:id/export' do
+  file_path = File.join(REPORTS_DIR, "#{params[:id]}.json")
+  if File.exist?(file_path)
+    dossier = JSON.parse(File.read(file_path))
+    
+    content = "RAPPORT OSINT MAX - #{dossier['name']}\n"
+    content += "Généré le: #{Time.now.strftime('%d/%m/%Y %H:%M')}\n"
+    content += "=" * 50 + "\n\n"
+    
+    dossier['results'].each do |res|
+      content += "[#{res['tool'].upcase}] - Cible: #{res['query']}\n"
+      content += "Date: #{res['timestamp']}\n"
+      content += "-" * 30 + "\n"
+      
+      case res['tool']
+      when 'sherlock', 'holehe'
+        res['data']['links'].each { |l| content += "- #{l['platform']}: #{l['url']}\n" }
+      when 'whois', 'iplookup'
+        res['data']['fields'].each { |k, v| content += "#{k}: #{v}\n" }
+      when 'exiftool'
+        res['data']['raw'].each { |k, v| content += "#{k}: #{v}\n" }
+      end
+      content += "\n"
+    end
+    
+    content_type 'text/plain'
+    attachment "#{dossier['name']}_export.txt"
+    content
+  else
+    status 404
+    "Dossier introuvable"
+  end
+end
+
+post '/dossiers' do
+  content_type :json
+  data = JSON.parse(request.body.read)
+  name = data['name'].to_s.strip
+  name = "Nouveau Dossier" if name.empty?
+  
+  id = "#{Time.now.to_i}_#{name.gsub(/[^a-zA-Z0-9]/, '_')}"
+  file_path = File.join(REPORTS_DIR, "#{id}.json")
+  
+  dossier = {
+    id: id,
+    name: name,
+    created_at: Time.now.to_s,
+    results: []
+  }
+  
+  File.write(file_path, dossier.to_json)
+  dossier.to_json
+end
+
+get '/dossiers/:id' do
+  content_type :json
+  file_path = File.join(REPORTS_DIR, "#{params[:id]}.json")
+  if File.exist?(file_path)
+    File.read(file_path)
+  else
+    status 404
+    { status: 'error', message: 'Dossier introuvable.' }.to_json
+  end
+end
+
+post '/dossiers/:id/add' do
+  content_type :json
+  file_path = File.join(REPORTS_DIR, "#{params[:id]}.json")
+  if File.exist?(file_path)
+    dossier = JSON.parse(File.read(file_path))
+    result_data = JSON.parse(request.body.read)
+    
+    dossier['results'] << {
+      tool: result_data['tool'],
+      query: result_data['query'],
+      timestamp: Time.now.to_s,
+      data: result_data['data']
+    }
+    
+    File.write(file_path, dossier.to_json)
+    { status: 'success' }.to_json
+  else
+    status 404
+    { status: 'error', message: 'Dossier introuvable.' }.to_json
+  end
 end
 
 # ── Sherlock : recherche par pseudonyme ───────────────────────────────────────
