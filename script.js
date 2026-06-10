@@ -116,7 +116,7 @@ function esc(str) {
 }
 
 function showError(area, msg) {
-    area.innerHTML = `<div class="msg-error">❌ ${esc(msg)}</div>`;
+    area.innerHTML = `<div class="msg-error">Erreur — ${esc(msg)}</div>`;
 }
 
 // ── Sherlock ──────────────────────────────────────────────────────────────────
@@ -149,14 +149,14 @@ async function runSherlock() {
         updateDossierSelectsVisibility();
 
         if (data.links.length === 0) {
-            area.innerHTML = `<div class="msg-no-results">🔍 Aucun profil trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
+            area.innerHTML = `<div class="msg-no-results">Aucun profil trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
             return;
         }
 
         const allUrls = data.links.map(l => l.url).join('\n');
         area.innerHTML =
-            `<div class="result-status green-text">✅ ${data.count} profil${data.count > 1 ? 's' : ''} trouvé${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`
-            + `<div class="copy-all-bar"><button class="btn-copy-all" onclick="copyText(${JSON.stringify(allUrls)}, this)">📋 Copier tous les URLs (${data.count})</button></div>`
+            `<div class="result-status green-text">${data.count} profil${data.count > 1 ? 's' : ''} trouvé${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`
+            + `<div class="copy-all-bar"><button class="btn-copy-all" onclick="copyText(${JSON.stringify(allUrls)}, this)">Copier tous les URLs (${data.count})</button></div>`
             + data.links.map((l, i) => `
             <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer"
                class="result-link green-link" style="animation-delay:${Math.min(i * 20, 400)}ms">
@@ -200,14 +200,14 @@ async function runHolehe() {
         updateDossierSelectsVisibility();
 
         if (data.links.length === 0) {
-            area.innerHTML = `<div class="msg-no-results">📧 Aucun compte trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
+            area.innerHTML = `<div class="msg-no-results">Aucun compte trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
             return;
         }
 
         const allUrls = data.links.map(l => l.url).join('\n');
         area.innerHTML =
-            `<div class="result-status blue-text">✅ ${data.count} compte${data.count > 1 ? 's' : ''} trouvé${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`
-            + `<div class="copy-all-bar"><button class="btn-copy-all" onclick="copyText(${JSON.stringify(allUrls)}, this)">📋 Copier tous les URLs (${data.count})</button></div>`
+            `<div class="result-status blue-text">${data.count} compte${data.count > 1 ? 's' : ''} trouvé${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`
+            + `<div class="copy-all-bar"><button class="btn-copy-all" onclick="copyText(${JSON.stringify(allUrls)}, this)">Copier tous les URLs (${data.count})</button></div>`
             + data.links.map((l, i) => `
             <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer"
                class="result-link blue-link" style="animation-delay:${Math.min(i * 20, 400)}ms">
@@ -250,12 +250,12 @@ async function runWhois() {
 
         const fields = data.fields;
         if (!fields || Object.keys(fields).length === 0) {
-            area.innerHTML = `<div class="msg-no-results">🌐 Aucune info trouvée pour <strong>${esc(data.query)}</strong>.</div>`;
+            area.innerHTML = `<div class="msg-no-results">Aucune info trouvée pour <strong>${esc(data.query)}</strong>.</div>`;
             return;
         }
 
         area.innerHTML =
-            `<div class="result-status purple-text">✅ Informations Whois pour « ${esc(data.query)} »</div>`
+            `<div class="result-status purple-text">Informations Whois pour « ${esc(data.query)} »</div>`
             + `<div class="fields-grid">`
             + Object.entries(fields).map(([k, v]) => `
             <div class="field-card">
@@ -298,7 +298,7 @@ async function runIpLookup() {
 
         const fields = data.fields;
         area.innerHTML =
-            `<div class="result-status orange-text">✅ Résultats pour « ${esc(data.query)} »</div>`
+            `<div class="result-status orange-text">Résultats pour « ${esc(data.query)} »</div>`
             + `<div class="fields-grid">`
             + Object.entries(fields).map(([k, v]) => `
             <div class="field-card">
@@ -393,12 +393,12 @@ function renderDnsResults(area, data) {
     const types   = Object.keys(results);
 
     if (types.length === 0) {
-        area.innerHTML = `<div class="msg-no-results">📡 Aucun enregistrement DNS trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
+        area.innerHTML = `<div class="msg-no-results">Aucun enregistrement DNS trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
         return;
     }
 
     const total = Object.values(results).reduce((s, a) => s + a.length, 0);
-    let html = `<div class="result-status cyan-text">✅ ${total} enregistrement${total > 1 ? 's' : ''} DNS pour « ${esc(data.query)} »</div>`;
+    let html = `<div class="result-status cyan-text">${total} enregistrement${total > 1 ? 's' : ''} DNS pour « ${esc(data.query)} »</div>`;
 
     const typeInfo = {
         A:     { label: 'A — IPv4',      desc: 'Adresses IPv4' },
@@ -418,12 +418,12 @@ function renderDnsResults(area, data) {
                 <span class="dns-type-pill">${esc(info.label)}</span>
                 <span style="font-size:0.74rem;color:var(--muted)">${esc(info.desc)}</span>
                 <button class="btn-copy-all" style="margin-left:auto"
-                    onclick="copyText(${JSON.stringify(allVals)})">📋 Copier</button>
+                    onclick="copyText(${JSON.stringify(allVals)})">Copier</button>
             </div>
             ${records.map(r => `
             <div class="dns-record">
                 <code>${esc(r)}</code>
-                <button class="copy-btn" onclick="copyText(${JSON.stringify(r)}, this)">📋</button>
+                <button class="copy-btn" onclick="copyText(${JSON.stringify(r)}, this)">⧉</button>
             </div>`).join('')}
         </div>`;
     }
@@ -460,7 +460,7 @@ async function runSsl() {
 
         const fields = data.fields;
         area.innerHTML =
-            `<div class="result-status rose-text">🔒 Certificat SSL pour « ${esc(data.query)} »</div>`
+            `<div class="result-status rose-text">Certificat SSL pour « ${esc(data.query)} »</div>`
             + `<div class="fields-grid">`
             + Object.entries(fields).map(([k, v]) => {
                 let valClass = 'rose';
@@ -519,12 +519,12 @@ async function runCrtsh() {
 
 function renderCrtshResults(area, data) {
     if (data.subdomains.length === 0) {
-        area.innerHTML = `<div class="msg-no-results">🔎 Aucun sous-domaine trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
+        area.innerHTML = `<div class="msg-no-results">Aucun sous-domaine trouvé pour <strong>${esc(data.query)}</strong>.</div>`;
         return;
     }
 
     const allSubs = data.subdomains.join('\n');
-    let html = `<div class="result-status indigo-text">✅ ${data.count} sous-domaine${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`;
+    let html = `<div class="result-status indigo-text">${data.count} sous-domaine${data.count > 1 ? 's' : ''} pour « ${esc(data.query)} »</div>`;
 
     if (data.cert_count) {
         html += `<div style="font-size:0.76rem;color:var(--muted);margin-bottom:8px">
@@ -534,14 +534,14 @@ function renderCrtshResults(area, data) {
 
     html += `<div class="crtsh-controls">
         <input class="crtsh-filter" id="crtsh-filter" placeholder="Filtrer les sous-domaines…" oninput="filterCrtsh(this.value)">
-        <button class="btn-copy-all" onclick="copyText(${JSON.stringify(allSubs)})">📋 Copier tout (${data.count})</button>
+        <button class="btn-copy-all" onclick="copyText(${JSON.stringify(allSubs)})">Copier tout (${data.count})</button>
     </div>`;
 
     html += `<div class="crtsh-list" id="crtsh-list">`
         + data.subdomains.map((s, i) => `
         <div class="crtsh-item" style="animation-delay:${Math.min(i * 10, 300)}ms">
             <span class="crtsh-name">${esc(s)}</span>
-            <button class="copy-btn" onclick="copyText(${JSON.stringify(s)}, this)">📋</button>
+            <button class="copy-btn" onclick="copyText(${JSON.stringify(s)}, this)">⧉</button>
         </div>`).join('')
         + `</div>`;
 
@@ -572,7 +572,7 @@ function handleDrop(event) {
 function handleFileSelect(file) {
     if (!file) return;
     selectedFile = file;
-    document.getElementById('drop-label').textContent = `📎 ${file.name} (${(file.size / 1024).toFixed(1)} Ko)`;
+    document.getElementById('drop-label').textContent = `${file.name} (${(file.size / 1024).toFixed(1)} Ko)`;
     document.getElementById('drop-zone').classList.add('has-file');
     document.getElementById('exif-actions').classList.remove('hidden');
     document.getElementById('results-exiftool').innerHTML =
@@ -619,7 +619,7 @@ function switchView(view) {
 
 function renderExif(area, data, view) {
     const count      = Object.values(data.raw).length;
-    const statusHtml = `<div class="result-status teal-text">✅ ${count} champ${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''} dans « ${esc(data.filename)} »</div>`;
+    const statusHtml = `<div class="result-status teal-text">${count} champ${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''} dans « ${esc(data.filename)} »</div>`;
 
     if (view === 'raw') {
         const lines = Object.entries(data.raw).map(([k, v]) =>
@@ -656,7 +656,7 @@ function renderExif(area, data, view) {
             const lon = data.raw.GPSLongitude;
             mapsLink = `<a class="gps-map-link"
                 href="https://maps.google.com/?q=${lat},${lon}" target="_blank" rel="noopener">
-                🗺️ Ouvrir dans Google Maps
+                Ouvrir dans Google Maps ↗
             </a>`;
         }
 
@@ -726,12 +726,12 @@ async function loadDossiers() {
 
         list.innerHTML = data.map(d => `
             <div class="dossier-card" onclick="openDossier('${esc(d.id)}')">
-                <span class="dossier-name">📂 ${esc(d.name)}</span>
-                <span class="dossier-date">Crée le : ${new Date(d.created_at).toLocaleString('fr-FR')}</span>
-                <span class="dossier-stats">📊 ${d.result_count} résultat${d.result_count > 1 ? 's' : ''}</span>
+                <span class="dossier-name">${esc(d.name)}</span>
+                <span class="dossier-date">Créé le : ${new Date(d.created_at).toLocaleString('fr-FR')}</span>
+                <span class="dossier-stats">${d.result_count} résultat${d.result_count > 1 ? 's' : ''}</span>
                 <div class="dossier-card-actions">
-                    <button class="btn-card-action" onclick="renameDossier('${esc(d.id)}', event)">✏️ Renommer</button>
-                    <button class="btn-card-action btn-danger" onclick="deleteDossier('${esc(d.id)}', event)">🗑️ Supprimer</button>
+                    <button class="btn-card-action" onclick="renameDossier('${esc(d.id)}', event)">Renommer</button>
+                    <button class="btn-card-action btn-danger" onclick="deleteDossier('${esc(d.id)}', event)">Supprimer</button>
                 </div>
             </div>
         `).join('');
@@ -872,10 +872,10 @@ async function addToReport(tool) {
         const data = await res.json();
         if (data.status === 'success') {
             const btn = document.getElementById(`save-${tool}`);
-            btn.textContent = '✅ Ajouté';
+            btn.textContent = '✓ Ajouté';
             btn.classList.add('active');
             setTimeout(() => {
-                btn.textContent = '➕ Rapport';
+                btn.textContent = '+ Rapport';
                 btn.classList.remove('active');
             }, 2200);
             currentDossierId = dossierId;
@@ -891,7 +891,7 @@ async function addToReport(tool) {
 function renderReport(dossier) {
     document.getElementById('report-title').textContent = dossier.name;
     document.getElementById('report-date').textContent  =
-        `Crée le : ${new Date(dossier.created_at).toLocaleString('fr-FR')}`;
+        `Créé le : ${new Date(dossier.created_at).toLocaleString('fr-FR')}`;
 
     const content = document.getElementById('report-content');
     if (dossier.results.length === 0) {
@@ -921,7 +921,7 @@ function renderToolData(tool, data) {
                 <span class="link-name">${esc(l.platform)}</span>
                 <span class="link-url ${cls}">${esc(l.url)}</span>
             </div>`).join('');
-        return `<div class="result-status ${cls}-text">✅ ${data.count} résultats</div>` + links;
+        return `<div class="result-status ${cls}-text">${data.count} résultats</div>` + links;
     }
 
     if (tool === 'whois' || tool === 'iplookup') {
@@ -955,7 +955,7 @@ function renderToolData(tool, data) {
                 <span class="crtsh-name">${esc(s)}</span>
             </div>`).join('');
         const more = data.count > 50 ? `<p style="color:var(--muted);font-size:0.78rem;padding:6px 0">… et ${data.count - 50} autres</p>` : '';
-        return `<div class="result-status indigo-text">✅ ${data.count} sous-domaines</div><div class="crtsh-list">${subs}</div>${more}`;
+        return `<div class="result-status indigo-text">${data.count} sous-domaines</div><div class="crtsh-list">${subs}</div>${more}`;
     }
 
     if (tool === 'exiftool') {

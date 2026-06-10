@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT MAX</title>
+    <title>OSINT MAX — Bureau d'investigation numérique</title>
     <meta name="description" content="Plateforme OSINT : Sherlock, Holehe, Whois, IP Lookup, DNS, SSL, crt.sh, ExifTool.">
     <link rel="stylesheet" href="style.css">
     <!-- Leaflet.js pour la carte IP -->
@@ -17,118 +17,122 @@
     <!-- ── Toast container ── -->
     <div id="toast-container"></div>
 
-    <!-- ── Sidebar ── -->
+    <!-- ── Sidebar : index du dossier ── -->
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <span class="logo-text">OSINT <span class="logo-accent">MAX</span></span>
-            <span class="logo-sub">Intelligence OSINT</span>
+            <span class="logo-eyebrow">Bureau d'investigation numérique</span>
+            <span class="logo-text">Osint<em>Max</em></span>
+            <span class="logo-stamp">Accès restreint</span>
         </div>
 
         <nav class="sidebar-nav">
-            <!-- Recherche par identité -->
+            <span class="nav-group-label">Identités</span>
             <button class="nav-item active" data-tool="sherlock" onclick="switchTool('sherlock')">
-                <span class="nav-item-icon">👤</span>
+                <span class="nav-code">S·01</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">Sherlock</span>
-                    <span class="nav-item-desc">Pseudo → Profils</span>
+                    <span class="nav-item-desc">Pseudo → profils</span>
                 </div>
             </button>
             <button class="nav-item" data-tool="holehe" onclick="switchTool('holehe')">
-                <span class="nav-item-icon">📧</span>
+                <span class="nav-code">S·02</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">Holehe</span>
-                    <span class="nav-item-desc">Email → Comptes</span>
+                    <span class="nav-item-desc">Email → comptes</span>
                 </div>
             </button>
 
-            <div class="nav-separator"></div>
-
-            <!-- Réseau & Domaines -->
+            <span class="nav-group-label">Réseau &amp; domaines</span>
             <button class="nav-item" data-tool="whois" onclick="switchTool('whois')">
-                <span class="nav-item-icon">🌐</span>
+                <span class="nav-code">R·01</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">Whois</span>
-                    <span class="nav-item-desc">Domaine → Registrar</span>
+                    <span class="nav-item-desc">Domaine → registrar</span>
                 </div>
             </button>
             <button class="nav-item" data-tool="dns" onclick="switchTool('dns')">
-                <span class="nav-item-icon">📡</span>
+                <span class="nav-code">R·02</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">DNS Lookup</span>
-                    <span class="nav-item-desc">Domaine → Enregistrements</span>
+                    <span class="nav-item-desc">Domaine → enregistrements</span>
                 </div>
             </button>
             <button class="nav-item" data-tool="ssl" onclick="switchTool('ssl')">
-                <span class="nav-item-icon">🔒</span>
+                <span class="nav-code">R·03</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">SSL / TLS</span>
-                    <span class="nav-item-desc">Domaine → Certificat</span>
+                    <span class="nav-item-desc">Domaine → certificat</span>
                 </div>
             </button>
             <button class="nav-item" data-tool="crtsh" onclick="switchTool('crtsh')">
-                <span class="nav-item-icon">🔎</span>
+                <span class="nav-code">R·04</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">crt.sh</span>
-                    <span class="nav-item-desc">Domaine → Sous-domaines</span>
+                    <span class="nav-item-desc">Domaine → sous-domaines</span>
                 </div>
             </button>
             <button class="nav-item" data-tool="iplookup" onclick="switchTool('iplookup')">
-                <span class="nav-item-icon">📍</span>
+                <span class="nav-code">R·05</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">IP Lookup</span>
-                    <span class="nav-item-desc">IP → Géolocalisation</span>
+                    <span class="nav-item-desc">IP → géolocalisation</span>
                 </div>
             </button>
 
-            <div class="nav-separator"></div>
-
-            <!-- Fichiers -->
+            <span class="nav-group-label">Pièces à conviction</span>
             <button class="nav-item" data-tool="exiftool" onclick="switchTool('exiftool')">
-                <span class="nav-item-icon">📷</span>
+                <span class="nav-code">P·01</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">ExifTool</span>
-                    <span class="nav-item-desc">Image → Métadonnées</span>
+                    <span class="nav-item-desc">Image → métadonnées</span>
                 </div>
             </button>
 
-            <div class="nav-separator"></div>
-
+            <span class="nav-group-label">Archives</span>
             <button class="nav-item" data-tool="dossiers" onclick="switchTool('dossiers')">
-                <span class="nav-item-icon">📂</span>
+                <span class="nav-code">ARCH</span>
                 <div class="nav-item-text">
                     <span class="nav-item-name">Dossiers</span>
-                    <span class="nav-item-desc">Rapports & Archives</span>
+                    <span class="nav-item-desc">Rapports &amp; archives</span>
                 </div>
             </button>
         </nav>
 
         <div class="sidebar-footer">
             <span>v3.0</span>
-            <span style="opacity:0.4">OSINT MAX</span>
+            <span class="footer-case">Nº 2026-OSX</span>
         </div>
     </aside>
 
-    <!-- ── Main ── -->
+    <!-- ── Main : la feuille du dossier ── -->
     <main class="main">
+
+        <header class="main-topbar">
+            <span>Document de travail — diffusion restreinte</span>
+            <span class="topbar-right" id="topbar-date"></span>
+        </header>
 
         <!-- ═══ SHERLOCK ═══════════════════════════════════════════════════════ -->
         <section class="tool-section active" id="section-sherlock">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-green">👤 Sherlock</span>
-                    <p class="tool-desc">Trouve les profils d'un pseudonyme sur des centaines de plateformes.</p>
+                    <span class="tool-index">Fiche S·01</span>
+                    <h1 class="tool-name">Sherlock</h1>
+                    <span class="tool-badge badge-green">Pseudonyme</span>
                 </div>
+                <p class="tool-desc">Localise les profils d'un pseudonyme sur des centaines de plateformes.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-sherlock" placeholder="Ex: johndoe" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-sherlock" placeholder="ex. johndoe" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-sherlock"></div>
                     </div>
                     <button class="btn-green" onclick="runSherlock()">Rechercher</button>
                     <select class="dossier-select hidden" id="select-sherlock"></select>
-                    <button class="btn-add-report hidden" id="save-sherlock" onclick="addToReport('sherlock')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-sherlock" onclick="addToReport('sherlock')">+ Rapport</button>
                 </div>
                 <details class="params-block">
-                    <summary>⚙️ Paramètres</summary>
+                    <summary>Paramètres de l'opération</summary>
                     <div class="params-grid">
                         <label class="param-label">
                             Timeout <span class="param-value" id="sherlock-timeout-val">5s</span>
@@ -136,12 +140,12 @@
                         <input type="range" id="sherlock-timeout" min="1" max="30" value="5"
                             oninput="document.getElementById('sherlock-timeout-val').textContent = this.value + 's'">
                         <label class="param-label">Filtre de site</label>
-                        <input type="text" class="param-input" id="sherlock-site" placeholder="Ex: twitter (optionnel)">
+                        <input type="text" class="param-input" id="sherlock-site" placeholder="ex. twitter (optionnel)">
                     </div>
                 </details>
             </div>
             <div class="result-area" id="results-sherlock">
-                <div class="result-placeholder">👤 Entrez un pseudonyme et lancez la recherche</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez un pseudonyme puis lancez la recherche</small></div>
             </div>
         </section>
 
@@ -149,20 +153,23 @@
         <section class="tool-section" id="section-holehe">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-blue">📧 Holehe</span>
-                    <p class="tool-desc">Vérifie si un email est enregistré sur différentes plateformes.</p>
+                    <span class="tool-index">Fiche S·02</span>
+                    <h1 class="tool-name">Holehe</h1>
+                    <span class="tool-badge badge-blue">Adresse e-mail</span>
                 </div>
+                <p class="tool-desc">Vérifie si une adresse e-mail est enregistrée sur différentes plateformes.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="email" id="input-holehe" placeholder="Ex: jean@exemple.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="email" id="input-holehe" placeholder="ex. jean@exemple.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-holehe"></div>
                     </div>
                     <button class="btn-blue" onclick="runHolehe()">Rechercher</button>
                     <select class="dossier-select hidden" id="select-holehe"></select>
-                    <button class="btn-add-report hidden" id="save-holehe" onclick="addToReport('holehe')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-holehe" onclick="addToReport('holehe')">+ Rapport</button>
                 </div>
                 <details class="params-block">
-                    <summary>⚙️ Paramètres</summary>
+                    <summary>Paramètres de l'opération</summary>
                     <div class="params-grid">
                         <label class="param-label">
                             Timeout <span class="param-value" id="holehe-timeout-val">10s</span>
@@ -181,7 +188,7 @@
                 </details>
             </div>
             <div class="result-area" id="results-holehe">
-                <div class="result-placeholder">📧 Entrez un email et lancez la recherche</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez une adresse e-mail puis lancez la recherche</small></div>
             </div>
         </section>
 
@@ -189,21 +196,24 @@
         <section class="tool-section" id="section-whois">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-purple">🌐 Whois</span>
-                    <p class="tool-desc">Informations sur un nom de domaine : registrar, dates, serveurs DNS.</p>
+                    <span class="tool-index">Fiche R·01</span>
+                    <h1 class="tool-name">Whois</h1>
+                    <span class="tool-badge badge-purple">Domaine</span>
                 </div>
+                <p class="tool-desc">Informations sur un nom de domaine : registrar, dates, serveurs DNS.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-whois" placeholder="Ex: google.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-whois" placeholder="ex. google.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-whois"></div>
                     </div>
                     <button class="btn-purple" onclick="runWhois()">Rechercher</button>
                     <select class="dossier-select hidden" id="select-whois"></select>
-                    <button class="btn-add-report hidden" id="save-whois" onclick="addToReport('whois')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-whois" onclick="addToReport('whois')">+ Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-whois">
-                <div class="result-placeholder">🌐 Entrez un domaine et lancez la recherche</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez un domaine puis lancez la recherche</small></div>
             </div>
         </section>
 
@@ -211,21 +221,24 @@
         <section class="tool-section" id="section-dns">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-cyan">📡 DNS Lookup</span>
-                    <p class="tool-desc">Interroge les enregistrements DNS d'un domaine : A, AAAA, MX, NS, TXT, CNAME, SOA.</p>
+                    <span class="tool-index">Fiche R·02</span>
+                    <h1 class="tool-name">DNS Lookup</h1>
+                    <span class="tool-badge badge-cyan">Enregistrements</span>
                 </div>
+                <p class="tool-desc">Interroge les enregistrements DNS d'un domaine : A, AAAA, MX, NS, TXT, CNAME, SOA.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-dns" placeholder="Ex: google.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-dns" placeholder="ex. google.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-dns"></div>
                     </div>
                     <button class="btn-cyan" onclick="runDns()">Interroger</button>
                     <select class="dossier-select hidden" id="select-dns"></select>
-                    <button class="btn-add-report hidden" id="save-dns" onclick="addToReport('dns')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-dns" onclick="addToReport('dns')">+ Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-dns">
-                <div class="result-placeholder">📡 Entrez un domaine pour interroger ses DNS</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez un domaine pour interroger ses DNS</small></div>
             </div>
         </section>
 
@@ -233,21 +246,24 @@
         <section class="tool-section" id="section-ssl">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-rose">🔒 SSL / TLS</span>
-                    <p class="tool-desc">Inspecte le certificat SSL/TLS d'un domaine : validité, émetteur, SAN, algorithme.</p>
+                    <span class="tool-index">Fiche R·03</span>
+                    <h1 class="tool-name">SSL / TLS</h1>
+                    <span class="tool-badge badge-rose">Certificat</span>
                 </div>
+                <p class="tool-desc">Inspecte le certificat SSL/TLS d'un domaine : validité, émetteur, SAN, algorithme.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-ssl" placeholder="Ex: github.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-ssl" placeholder="ex. github.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-ssl"></div>
                     </div>
                     <button class="btn-rose" onclick="runSsl()">Inspecter</button>
                     <select class="dossier-select hidden" id="select-ssl"></select>
-                    <button class="btn-add-report hidden" id="save-ssl" onclick="addToReport('ssl')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-ssl" onclick="addToReport('ssl')">+ Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-ssl">
-                <div class="result-placeholder">🔒 Entrez un domaine pour inspecter son certificat SSL</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez un domaine pour inspecter son certificat</small></div>
             </div>
         </section>
 
@@ -255,21 +271,24 @@
         <section class="tool-section" id="section-crtsh">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-indigo">🔎 crt.sh</span>
-                    <p class="tool-desc">Découvre les sous-domaines via la transparence des certificats (Certificate Transparency).</p>
+                    <span class="tool-index">Fiche R·04</span>
+                    <h1 class="tool-name">crt.sh</h1>
+                    <span class="tool-badge badge-indigo">Sous-domaines</span>
                 </div>
+                <p class="tool-desc">Découvre les sous-domaines via la transparence des certificats (Certificate Transparency).</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-crtsh" placeholder="Ex: github.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-crtsh" placeholder="ex. github.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-crtsh"></div>
                     </div>
                     <button class="btn-indigo" onclick="runCrtsh()">Rechercher</button>
                     <select class="dossier-select hidden" id="select-crtsh"></select>
-                    <button class="btn-add-report hidden" id="save-crtsh" onclick="addToReport('crtsh')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-crtsh" onclick="addToReport('crtsh')">+ Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-crtsh">
-                <div class="result-placeholder">🔎 Entrez un domaine pour découvrir ses sous-domaines</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez un domaine pour découvrir ses sous-domaines</small></div>
             </div>
         </section>
 
@@ -277,21 +296,24 @@
         <section class="tool-section" id="section-iplookup">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-orange">📍 IP Lookup</span>
-                    <p class="tool-desc">Géolocalisation et infos réseau d'une adresse IP ou d'un hostname.</p>
+                    <span class="tool-index">Fiche R·05</span>
+                    <h1 class="tool-name">IP Lookup</h1>
+                    <span class="tool-badge badge-orange">Géolocalisation</span>
                 </div>
+                <p class="tool-desc">Géolocalisation et informations réseau d'une adresse IP ou d'un hostname.</p>
                 <div class="search-row">
                     <div class="search-wrapper">
-                        <input type="text" id="input-iplookup" placeholder="Ex: 8.8.8.8 ou google.com" autocomplete="off" spellcheck="false">
+                        <span class="field-label">Objet de la recherche</span>
+                        <input type="text" id="input-iplookup" placeholder="ex. 8.8.8.8 ou google.com" autocomplete="off" spellcheck="false">
                         <div class="history-dropdown" id="history-iplookup"></div>
                     </div>
                     <button class="btn-orange" onclick="runIpLookup()">Rechercher</button>
                     <select class="dossier-select hidden" id="select-iplookup"></select>
-                    <button class="btn-add-report hidden" id="save-iplookup" onclick="addToReport('iplookup')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-iplookup" onclick="addToReport('iplookup')">+ Rapport</button>
                 </div>
             </div>
             <div class="result-area" id="results-iplookup">
-                <div class="result-placeholder">📍 Entrez une IP ou un hostname et lancez la recherche</div>
+                <div class="result-placeholder">En attente de saisie<small>Entrez une IP ou un hostname puis lancez la recherche</small></div>
             </div>
         </section>
 
@@ -299,22 +321,24 @@
         <section class="tool-section" id="section-exiftool">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-teal">📷 ExifTool</span>
-                    <p class="tool-desc">Extrait les métadonnées d'une image (GPS, appareil, date, logiciel…).</p>
+                    <span class="tool-index">Fiche P·01</span>
+                    <h1 class="tool-name">ExifTool</h1>
+                    <span class="tool-badge badge-teal">Pièce jointe</span>
                 </div>
+                <p class="tool-desc">Extrait les métadonnées d'une image : GPS, appareil, date, logiciel…</p>
                 <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
                     ondragover="event.preventDefault(); this.classList.add('drag-over')"
                     ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
-                    <span class="drop-icon">📁</span>
-                    <span class="drop-label" id="drop-label">Glissez une image ici ou cliquez pour choisir</span>
-                    <span class="drop-hint">JPG, PNG, TIFF, WEBP, HEIC</span>
+                    <span class="drop-icon">⊕</span>
+                    <span class="drop-label" id="drop-label">Déposez une photographie ici, ou cliquez pour joindre une pièce</span>
+                    <span class="drop-hint">JPG · PNG · TIFF · WEBP · HEIC</span>
                 </div>
                 <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.tiff,.tif,.webp,.heic,.gif"
                     style="display:none" onchange="handleFileSelect(this.files[0])">
                 <div class="exif-actions hidden" id="exif-actions">
-                    <button class="btn-teal" onclick="runExiftool()">🔬 Analyser</button>
+                    <button class="btn-teal" onclick="runExiftool()">Analyser</button>
                     <select class="dossier-select hidden" id="select-exiftool"></select>
-                    <button class="btn-add-report hidden" id="save-exiftool" onclick="addToReport('exiftool')">➕ Rapport</button>
+                    <button class="btn-add-report hidden" id="save-exiftool" onclick="addToReport('exiftool')">+ Rapport</button>
                     <div class="view-toggle">
                         <button class="toggle-btn active" id="btn-view-pretty" onclick="switchView('pretty')">Vue lisible</button>
                         <button class="toggle-btn" id="btn-view-raw" onclick="switchView('raw')">Vue brute</button>
@@ -322,7 +346,7 @@
                 </div>
             </div>
             <div class="result-area" id="results-exiftool">
-                <div class="result-placeholder">📷 Déposez une image pour extraire ses métadonnées</div>
+                <div class="result-placeholder">Aucune pièce jointe<small>Déposez une image pour extraire ses métadonnées</small></div>
             </div>
         </section>
 
@@ -330,12 +354,17 @@
         <section class="tool-section" id="section-dossiers">
             <div class="tool-top">
                 <div class="tool-title-row">
-                    <span class="tool-badge badge-info">📂 Dossiers</span>
-                    <p class="tool-desc">Consultez vos rapports OSINT sauvegardés et gérez vos dossiers.</p>
+                    <span class="tool-index">Archives</span>
+                    <h1 class="tool-name">Dossiers</h1>
+                    <span class="tool-badge badge-info">Rapports</span>
                 </div>
+                <p class="tool-desc">Consultez vos rapports OSINT sauvegardés et gérez vos dossiers d'enquête.</p>
                 <div class="search-row">
-                    <input type="text" id="input-dossier-name" placeholder="Nom du nouveau dossier..." autocomplete="off">
-                    <button class="btn-info" onclick="createNewDossier()">➕ Nouveau Dossier</button>
+                    <div class="search-wrapper">
+                        <span class="field-label">Intitulé du dossier</span>
+                        <input type="text" id="input-dossier-name" placeholder="ex. Affaire nº 7" autocomplete="off">
+                    </div>
+                    <button class="btn-info" onclick="createNewDossier()">+ Nouveau dossier</button>
                 </div>
             </div>
             <div class="dossier-list" id="dossier-list"></div>
@@ -346,11 +375,12 @@
             <div class="report-header">
                 <div class="report-actions">
                     <button class="btn-back" onclick="switchTool('dossiers')">← Retour</button>
-                    <button class="btn-info btn-print" onclick="window.print()">🖨️ Imprimer</button>
-                    <button class="btn-purple btn-export" id="btn-export-txt" onclick="exportDossier('txt')">📄 TXT</button>
-                    <button class="btn-cyan btn-export" id="btn-export-json" onclick="exportDossier('json')">📦 JSON</button>
+                    <button class="btn-info btn-print" onclick="window.print()">Imprimer</button>
+                    <button class="btn-purple btn-export" id="btn-export-txt" onclick="exportDossier('txt')">Export TXT</button>
+                    <button class="btn-cyan btn-export" id="btn-export-json" onclick="exportDossier('json')">Export JSON</button>
                 </div>
                 <div class="report-title-block">
+                    <span class="report-eyebrow">Rapport d'enquête</span>
                     <h1 id="report-title">Rapport</h1>
                     <span id="report-date" class="report-date"></span>
                 </div>
@@ -360,9 +390,10 @@
 
     </main>
 
-    <!-- Carte IP (Leaflet) -->
-    <div id="ip-map"></div>
-
+    <script>
+        document.getElementById('topbar-date').textContent =
+            new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+    </script>
     <script src="script.js"></script>
 </body>
 
